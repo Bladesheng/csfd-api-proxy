@@ -1,4 +1,4 @@
-import { Router, cors } from 'itty-router';
+import { Router, cors, error } from 'itty-router';
 import { csfd } from 'node-csfd-api';
 
 const { preflight, corsify } = cors();
@@ -14,7 +14,7 @@ router.get('/detail/:movieortv', async ({ params, query }) => {
 	const year = query.year;
 
 	if (name === undefined) {
-		return new Response('Invalid movie name', { status: 400 });
+		return error(400, 'Invalid movie name');
 	}
 
 	try {
@@ -27,21 +27,21 @@ router.get('/detail/:movieortv', async ({ params, query }) => {
 		} else if (movieOrTv === 'tv') {
 			searchResults = searchResponse.tvSeries;
 		} else {
-			return new Response('Invalid movie/tv type', { status: 400 });
+			return error(400, 'Invalid movie/tv type');
 		}
 
 		if (year !== undefined) {
 			const parsedYear = parseInt(year);
 
 			if (isNaN(parsedYear)) {
-				return new Response('Invalid year', { status: 400 });
+				return error(400, 'Invalid year');
 			}
 
 			searchResults = searchResults.filter((movie) => movie.year === parsedYear);
 		}
 
 		if (searchResults.length === 0) {
-			return new Response('No results found', { status: 404 });
+			return error(404, 'No movies / tv found');
 		}
 
 		const id = searchResults[0].id;
@@ -56,7 +56,7 @@ router.get('/detail/:movieortv', async ({ params, query }) => {
 	} catch (e) {
 		console.error(e);
 
-		return new Response('Internal server error', { status: 500 });
+		return error(500);
 	}
 });
 
@@ -64,7 +64,7 @@ router.get('/tmdb', ({ headers }, env) => {
 	const password = headers.get('password');
 
 	if (password !== env.TMDB_PASSWORD) {
-		return new Response('Unauthorized', { status: 401 });
+		return error(401);
 	}
 
 	return new Response(
@@ -79,7 +79,9 @@ router.get('/tmdb', ({ headers }, env) => {
 	);
 });
 
-router.all('*', () => new Response('404, not found!', { status: 404 }));
+router.all('*', () => {
+	return error(404);
+});
 
 export default {
 	// https://itty.dev/itty-router/guides/cloudflare-workers
