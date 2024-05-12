@@ -55,6 +55,25 @@ router.get('/detail/:movieortv', async ({ params, query }) => {
 	}
 });
 
+router.get('/tmdb', ({ headers }, env) => {
+	const password = headers.get('password');
+
+	if (password !== env.TMDB_PASSWORD) {
+		return new Response('Unauthorized', { status: 401 });
+	}
+
+	return new Response(
+		JSON.stringify({
+			accessToken: env.TMDB_ACCESS_TOKEN,
+		}),
+		{
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}
+	);
+});
+
 router.all('*', () => new Response('404, not found!', { status: 404 }));
 
 export default {
