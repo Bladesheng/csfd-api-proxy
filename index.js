@@ -1,7 +1,12 @@
-import { Router } from 'itty-router';
+import { Router, cors } from 'itty-router';
 import { csfd } from 'node-csfd-api';
 
-const router = Router();
+const { preflight, corsify } = cors();
+
+const router = Router({
+	before: [preflight],
+	finally: [corsify],
+});
 
 router.get('/detail/:movieortv', async ({ params, query }) => {
 	const movieOrTv = params.movieortv;
@@ -77,5 +82,6 @@ router.get('/tmdb', ({ headers }, env) => {
 router.all('*', () => new Response('404, not found!', { status: 404 }));
 
 export default {
-	fetch: router.handle,
+	// https://itty.dev/itty-router/guides/cloudflare-workers
+	...router,
 };
