@@ -40,7 +40,7 @@ Try the below curl command to send JSON:
 
 $ curl -X POST <worker> -H "Content-Type: application/json" -d '{"abc": "def"}'
 */
-router.post('/post', async request => {
+router.post('/post', async (request) => {
 	// Create a base object with some fields.
 	let fields = {
 		asn: request.cf.asn,

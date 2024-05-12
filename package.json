@@ -5,12 +5,13 @@
 	"scripts": {
 		"deploy": "wrangler deploy index.js",
 		"dev": "wrangler dev index.js",
-		"test": "vitest"
+		"format": "prettier --write ./"
 	},
 	"dependencies": {
 		"itty-router": "^2.6.1"
 	},
 	"devDependencies": {
+		"prettier": "^3.2.5",
 		"wrangler": "^3.0.0"
 	}
 }
