@@ -8,11 +8,11 @@
 		"format": "prettier --write ./"
 	},
 	"dependencies": {
-		"itty-router": "^5.0.17",
-		"node-csfd-api": "^2.7.10"
+		"itty-router": "^5.0.18",
+		"node-csfd-api": "^2.11.6"
 	},
 	"devDependencies": {
-		"prettier": "^3.2.5",
-		"wrangler": "^3.55.0"
+		"prettier": "^3.5.3",
+		"wrangler": "^4.14.1"
 	}
 }
